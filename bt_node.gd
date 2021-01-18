@@ -2,65 +2,65 @@ class_name BTNode, "icons/btnode.svg"
 extends Node
 
 class BTNodeState:
-	var success: bool = true  setget SetSuccess
-	var failure: bool = false setget SetFailure
-	var running: bool = false setget SetRunning
+	var success: bool = true  setget set_success
+	var failure: bool = false setget set_failure
+	var running: bool = false setget set_running
 	
-	func SetSuccess(value: bool = true):
+	func set_success(value: bool = true):
 		if value == false:
 			print_debug("Ignoring manual change of BTState member. Use setters.")
 			return
 		success = true
 		failure = false
 		running = false
-	func SetFailure(value: bool = true):
+	func set_failure(value: bool = true):
 		if value == false:
 			print_debug("Ignoring manual change of BTState member. Use setters.")
 			return
 		success = false
 		failure = true
 		running = false
-	func SetRunning(value: bool = true):
+	func set_running(value: bool = true):
 		if value == false:
 			print_debug("Ignoring manual change of BTState member. Use setters.")
 			return
 		success = false
 		failure = false
 		running = true
-	func Equals(rhs: BTNodeState):
+	func equals(rhs: BTNodeState):
 		if rhs.success:
-			SetSuccess()
+			set_success()
 		elif rhs.failure:
-			SetFailure()
+			set_failure()
 		else:
-			SetRunning()
+			set_running()
 
-export(bool) var isActive = true
+export(bool) var is_active = true
 export(bool) var debug = false
 var state: BTNodeState = BTNodeState.new()
 var fresh: bool = true
 
 signal tick(result)
 
-func Succeed():
+func succeed():
 	state.SetSuccess()
 	emit_signal("tick", true)
-func Fail():
+func fail():
 	state.SetFailure()
 	emit_signal("tick", false)
-func Run():
+func run():
 	state.SetRunning()
-func Succeeded():
+func succeeded():
 	return state.success
-func Failed():
+func failed():
 	return state.failure
-func Running():
+func running():
 	return state.running
 
 # warning-ignore:unused_argument
 # warning-ignore:unused_argument
-func Tick(agent: Node, blackboard: Blackboard):
-	if not isActive or Running():
+func tick(agent: Node, blackboard: Blackboard):
+	if not is_active or running():
 		return
 	if fresh == true:
 		fresh = false
@@ -68,8 +68,8 @@ func Tick(agent: Node, blackboard: Blackboard):
 		print(name)
 
 func _ready():
-	if isActive:
-		Succeed()
+	if is_active:
+		succeed()
 	else:
 		push_warning(name + ", ID: " + get_path() + " was deactivated.")
-		Fail()
+		fail()

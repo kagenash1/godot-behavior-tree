@@ -1,15 +1,15 @@
-class_name BTParallel, "res://Src/BehaviourTree/icons/btparallel.svg"
+class_name BTParallel, "icons/btparallel.svg"
 extends BTNode
 
-func Tick(agent: Node, blackboard: Blackboard):
-	if not isActive:
+func tick(agent: Node, blackboard: Blackboard):
+	if not is_active:
 		return
 	if debug:
 		print(name)
 	if fresh == true:
 		fresh = false
 	for c in get_children():
-		var btChild: BTNode = c
-		btChild.Tick(agent, blackboard)
-	Succeed()
+		var bt_child: BTNode = c
+		bt_child.tick(agent, blackboard)
+	succeed()
 

@@ -7,4 +7,4 @@ export(String) var blackboard_key: String
 onready var blackboard: Blackboard = get_parent() as Blackboard
 
 func _ready():
-	assert(blackboard.HasData(blackboard_key))
+	assert(blackboard.has_data(blackboard_key))

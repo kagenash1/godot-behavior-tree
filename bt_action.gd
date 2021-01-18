@@ -2,33 +2,33 @@ class_name BTAction, "icons/btaction.svg"
 extends BTNode
 
 export(String) var action_name = name
-export(Array, String) var argumentKeys: Array
+export(Array, String) var argument_keys: Array
 
-func Tick(agent: Node, blackboard: Blackboard):
+func tick(agent: Node, blackboard: Blackboard):
 	if fresh:
 		if not agent.has_method(name) and not agent.has_method(action_name):
-			isActive = false
-		for key in argumentKeys:
-			if not blackboard.HasData(key):
-				isActive = false
-	if not isActive:
+			is_active = false
+		for key in argument_keys:
+			if not blackboard.has_data(key):
+				is_active = false
+	if not is_active:
 		return
 	else:
 		fresh = false
 	if debug:
 		print(name)
-	if Running():
+	if running():
 		return
 	var args := []
-	if argumentKeys.size() > 0:
-		for key in argumentKeys:
-			var value = blackboard.GetData(key)
+	if argument_keys.size() > 0:
+		for key in argument_keys:
+			var value = blackboard.get_data(key)
 			if value != null:
 				args.push_back(value)
 			else:
-				Fail()
+				fail()
 				return
-	Run()
+	run()
 	var result
 	if action_name != "":
 		result = agent.callv(action_name, args)
@@ -39,6 +39,6 @@ func Tick(agent: Node, blackboard: Blackboard):
 	if result == null:
 		result = true
 	if result == true:
-		Succeed()
+		succeed()
 	else:
-		Fail()
+		fail()

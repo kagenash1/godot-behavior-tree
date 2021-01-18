@@ -11,11 +11,11 @@ func _ready():
 	for key in data.keys():
 		assert(key is String)
 
-func SetData(key: String, value):
+func set_data(key: String, value):
 	if data.has(key):
 		data[key] = value
 
-func GetData(key: String):
+func get_data(key: String):
 	if data.has(key):
 		var value = data[key]
 		if value is NodePath:
@@ -27,6 +27,6 @@ func GetData(key: String):
 		else:
 			return value
 
-func HasData(key: String):
+func has_data(key: String):
 	return data.has(key)
 

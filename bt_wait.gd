@@ -1,24 +1,18 @@
 class_name BTWait, "icons/btwait.svg"
 extends BTNode
 
-#export(bool) var isAgentReaction = false
-export(float) var waitTime 
+export(float) var wait_time 
 
 # warning-ignore:unused_argument
-func Tick(agent: Node, blackboard: Blackboard):
-#	if isAgentReaction and fresh:
-#		if not "reaction_time" in agent:
-#			isActive = false
-	if not isActive:
+func tick(agent: Node, blackboard: Blackboard):
+	if not is_active:
 		return
 	else:
 		fresh = false
-	if Running():
+	if running():
 		return
 	if debug:
 		print(name)
-#	if isAgentReaction:
-#		waitTime = agent.reactionTime
-	Run()
-	yield(get_tree().create_timer(waitTime, false), "timeout")
-	Succeed()
+	run()
+	yield(get_tree().create_timer(wait_time, false), "timeout")
+	succeed()
