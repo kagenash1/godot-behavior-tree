@@ -7,3 +7,5 @@ INSTRUCTIONS:
 - After creating a behavior tree, you must specify who is the owner of the AI (the Agent) and what Blackboard is being used. Blackboards should be created separately and provided with BBServices which act as a kind of 'sensors' to write data on the Blackboard.
 
 Tutorials/demos will be included soon. 
+
+If you need support, contact gabriele.torini@outlook.it or on Discord at kagenashi#8224
