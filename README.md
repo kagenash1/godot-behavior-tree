@@ -9,7 +9,7 @@ INSTRUCTIONS:
 Unlike other implementations, you're not supposed to extend the actions/conditions' script, everything is done from the inspector.
 - If argument keys for actions or conditionals are not present in the Blackboard, the branch will be inactivated. The Blackboard performs sanity checks so that if your argument key is still empty, but present, the action is skipped.
 - BTGuards can be used to temporarily lock branches. Optionally, you can assign an unlocker, which will override the lock time specified. There is also the option to assign a locker. BTGuards can make your behavior very rich and reactive, as well as optimised, as they avoid unnecessary branching and repetition. They are the essence of this implementation.
-- You can either have a huge behaviour tree, but the best practice is to follow the component philosophy of Godot and make several smaller behaviour trees for each component of your scene. A behaviour tree can only have one blackboard, but the same blackboard can be used by many trees, so this is particularly handy if you wanna have several trees without also making multiple blackboards.
+- You could have a huge behaviour tree, but the best practice is to follow the component philosophy of Godot and make several smaller behaviour trees for each component of your scene. A behaviour tree can only have one blackboard, but the same blackboard can be used by many trees, so this is particularly handy if you wanna have several trees without also making multiple blackboards.
 
 
 Tutorials/demos will be included soon. 
