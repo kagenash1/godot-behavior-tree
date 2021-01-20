@@ -1,5 +1,5 @@
 # godot-behavior-tree
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/GabrieleTorini)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/GabrieleTorini) <-- If you make amazing AI with the Behavior Tree, consider offerring me a coffee so I can stay awake and improve it :)
 
 A GDScript implementation of a behavior tree for game AI, based on native Godot nodes and using the built in scene tree editor.
 
