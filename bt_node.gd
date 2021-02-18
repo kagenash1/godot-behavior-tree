@@ -43,13 +43,13 @@ var fresh: bool = true
 signal tick(result)
 
 func succeed():
-	state.SetSuccess()
+	state.set_success()
 	emit_signal("tick", true)
 func fail():
-	state.SetFailure()
+	state.set_failure()
 	emit_signal("tick", false)
 func run():
-	state.SetRunning()
+	state.set_running()
 func succeeded():
 	return state.success
 func failed():
