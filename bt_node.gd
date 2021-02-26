@@ -56,6 +56,14 @@ func failed():
 	return state.failure
 func running():
 	return state.running
+	
+func get_state() -> String:
+	if succeeded():
+		return "success"
+	elif failed():
+		return "failure"
+	else:
+		return "running"
 
 # warning-ignore:unused_argument
 # warning-ignore:unused_argument

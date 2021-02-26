@@ -21,7 +21,7 @@ func get_data(key: String):
 		if value is NodePath:
 			if value.is_empty() or not get_tree().get_root().has_node(value):
 				data[key] = null
-				return null 
+				return null
 			else:
 				return get_node(value)
 		else:

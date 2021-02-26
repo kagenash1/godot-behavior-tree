@@ -6,7 +6,8 @@ export(Array, String) var argument_keys: Array
 
 func tick(agent: Node, blackboard: Blackboard):
 	if fresh:
-		if not agent.has_method(name) and not agent.has_method(action_name):
+		if is_active and not agent.has_method(name) and not agent.has_method(action_name):
+			print(name + " deactivated.")
 			is_active = false
 		for key in argument_keys:
 			if not blackboard.has_data(key):
@@ -30,7 +31,7 @@ func tick(agent: Node, blackboard: Blackboard):
 				return
 	run()
 	var result
-	if action_name != "":
+	if action_name:
 		result = agent.callv(action_name, args)
 	else:
 		result = agent.callv(name, args)
@@ -38,6 +39,7 @@ func tick(agent: Node, blackboard: Blackboard):
 		result = yield(result, "completed")
 	if result == null:
 		result = true
+		
 	if result == true:
 		succeed()
 	else:

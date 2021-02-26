@@ -1,4 +1,4 @@
-class_name BehaviourTree, "icons/bt.svg" 
+class_name BehaviorTree, "icons/bt.svg" 
 extends Node
 
 export(bool) var is_active: bool = false
