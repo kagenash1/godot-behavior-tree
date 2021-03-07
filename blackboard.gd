@@ -27,8 +27,7 @@ func _ready():
 
 
 func set_data(key: String, value):
-	if data.has(key):
-		data[key] = value
+	data[key] = value
 
 
 func get_data(key: String):
