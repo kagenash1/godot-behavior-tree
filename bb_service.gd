@@ -13,9 +13,6 @@ extends Node
 
 
 # Turn this on if you want the survice to run continuously.
-# There are several cases where, instead, you just want to have some kind of callback in the servive,
-# rather than running it several times, to optimise performance (eg: a service that responds to an area_enter() 
-# signal from an Area or Area2D to detect the player and store its position in the blackboard)
 export(bool) var is_active: bool = false
 
 # If you don't change this, the service will run at each physics frame when active
@@ -40,9 +37,9 @@ func _stop():
 
 # END OF VIRTUAL FUNCTIONS
 
-
-# Example usage when you don't wanna run() the service continuously,
-# suppose we have an Area called PlayerDetector which collides only with the 
+# There are several cases where, instead, you just want to have some kind of callback in the service,
+# rather than running it several times, to optimise performance.
+# For example suppose we have an Area called PlayerDetector which collides only with the 
 # 'player' collision layer.
 # We connect that area to the following method:
 #
