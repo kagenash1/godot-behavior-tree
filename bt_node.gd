@@ -1,19 +1,7 @@
 class_name BTNode, "icons/btnode.svg" 
 extends Node
 
-#############################################
-########## READ. THE. COMMENTS. #############
-########## READ. THE. COMMENTS. #############
-########## READ. THE. COMMENTS. #############
-########## READ. THE. COMMENTS. #############
-########## READ. THE. COMMENTS. #############
-########## READ. THE. COMMENTS. #############
-########## READ. THE. COMMENTS. #############
-#############################################
 
-
-# You shouldn't need to mess with this
-# Just a fancy way to emulate a C# like enum while waiting 4 Godot
 class BTNodeState:
 	var success: bool = true  setget set_success
 	var failure: bool = false setget set_failure
@@ -47,8 +35,7 @@ class BTNodeState:
 		running = true
 
 # Emitted after a tick() call. True is success, false is failure. Can be useful
-# to get info on the state of other BTNodes, but if you don't need it you don't 
-# have to worry about it
+# to get info on the state of other BTNodes
 signal tick(result)
 
 export(bool) var is_active = true # Turn this off to block a branch of the BT
@@ -93,7 +80,6 @@ func set_state(rhs: BTNodeState):
 # BEGINNING OF VIRTUAL FUNCTIONS
 
 # These are the base functions to override in your BTAction and BTCondition
-# You don't need to call the base manually in your overridden functions
 
 # This is the most important function. Your behavior goes here
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
