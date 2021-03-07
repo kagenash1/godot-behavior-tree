@@ -1,46 +1,23 @@
 class_name BTAction, "icons/btaction.svg" 
 extends BTNode
 
-export(String) var action_name = name
-export(Array, String) var argument_keys: Array
+# PROTIP: If you wanna wait for an action to complete, do the following:
+# 
+# run()
+# var result = agent.do_something()
+# if result is GDScriptFunctionState:
+# 	var result = yield(result, "completed")
+# if result == true:
+# 	return succeed()
+# else:
+# 	return fail()
 
-func tick(agent: Node, blackboard: Blackboard):
-	if fresh:
-		if is_active and not agent.has_method(name) and not agent.has_method(action_name):
-			print(name + " deactivated.")
-			is_active = false
-		for key in argument_keys:
-			if not blackboard.has_data(key):
-				is_active = false
-	if not is_active:
-		return
-	else:
-		fresh = false
-	if debug:
-		print(name)
-	if running():
-		return
-	var args := []
-	if argument_keys.size() > 0:
-		for key in argument_keys:
-			var value = blackboard.get_data(key)
-			if value != null:
-				args.push_back(value)
-			else:
-				fail()
-				return
-	run()
-	var result
-	if action_name:
-		result = agent.callv(action_name, args)
-	else:
-		result = agent.callv(name, args)
-	if result is GDScriptFunctionState:
-		result = yield(result, "completed")
-	if result == null:
-		result = true
-		
-	if result == true:
-		succeed()
-	else:
-		fail()
+
+func _fresh_tick(agent: Node, blackboard: Blackboard) -> bool:
+	# Remove this line and do whatever you want
+	return ._fresh_tick(agent, blackboard)
+
+
+func _tick(agent: Node, blackboard: Blackboard) -> bool:
+	# Remove this line and do whatever you want
+	return ._tick(agent, blackboard)

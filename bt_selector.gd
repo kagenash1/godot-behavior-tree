@@ -1,13 +1,7 @@
 class_name BTSelector, "icons/btselector.svg"
 extends BTNode
 
-func tick(agent: Node, blackboard: Blackboard):
-	if not is_active or running():
-		return
-	if debug:
-		print(name)
-	if fresh == true:
-		fresh = false
+func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	for c in get_children():
 		var bt_child: BTNode = c
 		var result = bt_child.tick(agent, blackboard)
@@ -15,6 +9,5 @@ func tick(agent: Node, blackboard: Blackboard):
 			run()
 			yield(result, "completed")
 		if bt_child.succeeded():
-			succeed()
-			return
-	fail()
+			return succeed()
+	return fail()

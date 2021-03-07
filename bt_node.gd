@@ -1,62 +1,80 @@
 class_name BTNode, "icons/btnode.svg" 
 extends Node
 
+#############################################
+########## READ. THE. COMMENTS. #############
+########## READ. THE. COMMENTS. #############
+########## READ. THE. COMMENTS. #############
+########## READ. THE. COMMENTS. #############
+########## READ. THE. COMMENTS. #############
+########## READ. THE. COMMENTS. #############
+########## READ. THE. COMMENTS. #############
+#############################################
+
+
+# You shouldn't need to mess with this
+# Just a fancy way to emulate a C# like enum while waiting 4 Godot
 class BTNodeState:
 	var success: bool = true  setget set_success
 	var failure: bool = false setget set_failure
 	var running: bool = false setget set_running
 	
+	
 	func set_success(value: bool = true):
 		if value == false:
-			print_debug("Ignoring manual change of BTState member. Use setters.")
+			print_debug("Ignoring manual change of BTNodeState. Use setters.")
 			return
 		success = true
 		failure = false
 		running = false
+	
+	
 	func set_failure(value: bool = true):
 		if value == false:
-			print_debug("Ignoring manual change of BTState member. Use setters.")
+			print_debug("Ignoring manual change of BTNodeState. Use setters.")
 			return
 		success = false
 		failure = true
 		running = false
+	
+	
 	func set_running(value: bool = true):
 		if value == false:
-			print_debug("Ignoring manual change of BTState member. Use setters.")
+			print_debug("Ignoring manual change of BTNodeState. Use setters.")
 			return
 		success = false
 		failure = false
 		running = true
-	func equals(rhs: BTNodeState):
-		if rhs.success:
-			set_success()
-		elif rhs.failure:
-			set_failure()
-		else:
-			set_running()
 
-export(bool) var is_active = true
-export(bool) var debug = false
+# Emitted after a tick() call. True is success, false is failure. Can be useful
+# to get info on the state of other BTNodes, but if you don't need it you don't 
+# have to worry about it
+signal tick(result)
+
+export(bool) var is_active = true # Turn this off to block a branch of the BT
+export(bool) var debug = false # Turn this on to print the name of the tick()ed BTNode
+
 var state: BTNodeState = BTNodeState.new()
 var fresh: bool = true
 
-signal tick(result)
 
-func succeed():
+# You can use these as setters and getters for the BTNodeState of a BTNode
+func succeed() -> bool:
 	state.set_success()
 	emit_signal("tick", true)
-func fail():
+	return true
+func fail() -> bool:
 	state.set_failure()
 	emit_signal("tick", false)
+	return false
 func run():
 	state.set_running()
-func succeeded():
+func succeeded() -> bool:
 	return state.success
-func failed():
+func failed() -> bool:
 	return state.failure
-func running():
+func running() -> bool:
 	return state.running
-	
 func get_state() -> String:
 	if succeeded():
 		return "success"
@@ -64,16 +82,48 @@ func get_state() -> String:
 		return "failure"
 	else:
 		return "running"
+func set_state(rhs: BTNodeState):
+	if rhs.success:
+		return succeed()
+	elif rhs.failure:
+		return fail()
+	else:
+		run()
 
-# warning-ignore:unused_argument
-# warning-ignore:unused_argument
-func tick(agent: Node, blackboard: Blackboard):
+# BEGINNING OF VIRTUAL FUNCTIONS
+
+# These are the base functions to override in your BTAction and BTCondition
+# You don't need to call the base manually in your overridden functions
+
+# This is the most important function. Your behavior goes here
+func _tick(agent: Node, blackboard: Blackboard) -> bool:
+	return succeed()
+
+
+# This is executed as long as fresh == true, supposedly to have a different behavior on the first tick
+func _fresh_tick(agent: Node, blackboard: Blackboard) -> bool:
+	fresh = false # When this is false, this function will not be called anymore
+	return fresh
+
+# END OF VIRTUAL FUNCTIONS
+
+
+# DO NOT override this
+func fresh_tick(agent: Node, blackboard: Blackboard) -> bool:
+	return _fresh_tick(agent, blackboard)
+
+
+# DO NOT override this
+func tick(agent: Node, blackboard: Blackboard) -> bool:
 	if not is_active or running():
-		return
-	if fresh == true:
-		fresh = false
+		return fail()
+	if fresh:
+		if fresh_tick(agent, blackboard):
+			return fail()
 	if debug:
-		print(name)
+		print(name + " at " + get_path())
+	return _tick(agent, blackboard)
+
 
 func _ready():
 	if is_active:

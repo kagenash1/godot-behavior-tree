@@ -1,39 +1,23 @@
 class_name BTConditional, "icons/btconditional.svg" 
 extends BTNode
 
-export(Dictionary) var blackboard_entries: Dictionary
-export(Dictionary) var agent_properties: Dictionary
+# PROTIP: If you wanna wait for an action to complete, do the following:
+# 
+# run()
+# var result = agent.do_something()
+# if result is GDScriptFunctionState:
+# 	var result = yield(result, "completed")
+# if result == true:
+# 	return succeed()
+# else:
+# 	return fail()
 
-func _ready():
-	assert(blackboard_entries.size() > 0 or agent_properties.size() > 0)
-	for key in blackboard_entries.keys():
-		assert(key is String)
-	for key in agent_properties.keys():
-		assert(key is String)
 
-# warning-ignore:unused_argument
-func tick(agent: Node, blackboard: Blackboard):
-	if fresh:
-		for key in blackboard_entries.keys():
-			if not blackboard.has_data(key):
-				is_active = false
-		for key in agent_properties.keys():
-			if not key in agent:
-				is_active = false
-	if not is_active:
-		return
-	else:
-		fresh = false
-	if debug:
-		print(name)
-	if blackboard_entries.size() > 0:
-		for key in blackboard_entries.keys():
-			if blackboard.get_data(key) != blackboard_entries[key]:
-				fail()
-				return
-	if agent_properties.size() > 0:
-		for key in agent_properties.keys():
-			if agent.get(key) != agent_properties[key]:
-				fail()
-				return
-	succeed()
+func _fresh_tick(agent: Node, blackboard: Blackboard) -> bool:
+	# Remove this line and do whatever you want
+	return ._fresh_tick(agent, blackboard)
+
+
+func _tick(agent: Node, blackboard: Blackboard) -> bool:
+	# Remove this line and do whatever you want
+	return ._tick(agent, blackboard)
