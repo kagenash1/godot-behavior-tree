@@ -5,11 +5,11 @@ extends Node
 # whether the player is nearby, your health is low, there is a cover available,
 # or whatever.
 #
-# JUST MAKE SURE you store the data here and use it for condition checks in BTCondition scripts, 
+# You just store the data here and use it for condition checks in BTCondition scripts, 
 # or as arguments for your function calls in BTAction.
 #
-# This is a good way, again, to separate data from behavior, which is essential 
-# to avoid bugs.
+# This is a good way to separate data from behavior, which is essential 
+# to avoid nasty bugs.
 
 export(Dictionary) var _data: Dictionary
 
