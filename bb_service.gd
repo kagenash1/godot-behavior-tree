@@ -12,9 +12,15 @@ extends Node
 # They are a good way to decouple the behavior from the data update.
 
 
-# If you don't change this, the service will run at each physics frame
+# Turn this on if you want the survice to run continuously.
+# There are several cases where, instead, you just want to have some kind of callback in the servive,
+# rather than running it several times, to optimise performance (eg: a service that responds to an area_enter() 
+# signal from an Area or Area2D to detect the player and store its position in the blackboard)
+export(bool) var is_active: bool = false
+
+# If you don't change this, the service will run at each physics frame when active
 export(float) var frequency: float = get_physics_process_delta_time()
-export(bool) var is_active: bool = true
+
 export(NodePath) var _agent
 export(NodePath) var _blackboard = get_parent().get_path()
 
@@ -23,29 +29,48 @@ onready var agent: Node = get_node_or_null(_agent)
 
 
 # BEGINNIG OF VIRTUAL FUNCTIONS
-# Override these in your services
+# Override these in your custom services if you plan on using them in parallel (is_active == true)
 
 func _run():
 	return true
 
-func _stop() -> bool:
+func _stop():
 	is_active = false
 	return is_active
 
 # END OF VIRTUAL FUNCTIONS
 
 
-func run() -> bool:
+# Example usage when you don't wanna run() the service continuously,
+# suppose we have an Area called PlayerDetector which collides only with the 
+# 'player' collision layer.
+# We connect that area to the following method:
+#
+# func _on_PlayerDetector_area_entered(area: Area):
+#	if area and area.owner is Player:
+#		blackboard.set_data("player_position", area.owner.position)
+#		blackboard.set_data("player_nearby", true)
+#		
+#
+# func _on_PlayerDetector_area_exited(area: Area):
+#	if area and area.owner is Player:
+#		blackboard.set_data("player_position", null)
+#		blackboard.set_data("player_nearby", false)
+
+
+# Do not override this
+func run():
+	is_active = true
 	while is_active:
-		if _run():
-			yield(get_tree().create_timer(frequency, false), "timeout")
-		else:
-			break
-	
-	return false
+		_run()
+		yield(get_tree().create_timer(frequency, false), "timeout")
 
 
-func stop() -> bool:
-	return _stop()
+# Do not override this
+func stop():
+	_stop()
 
 
+func _ready():
+	if is_active:
+		run()
