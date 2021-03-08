@@ -8,27 +8,31 @@ extends BTNode
 # (BTSequence, BTSelector or BTParallel) to define the flow between multiple leaf nodes.
 
 
-# PROTIP: If you wanna wait for an action or check to complete, do the following: 
-# run()
-# var result = agent.do_something()
-# if result is GDScriptFunctionState:
-# 	var result = yield(result, "completed")
-# if result == true:
-# 	return succeed()
-# else:
-# 	return fail()
-
-
 # BEGINNING OF VIRTUAL FUNCTIONS 
 # Extend this script and override the following functions to define your behavior.
+# The following are just abstract examples, take them as a reference and insert your own logic.
+
 
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
-	return ._tick(agent, blackboard)
+	run() # We set this node in a running state so parent composite nodes will wait for the end of execution
+	var result = agent.call("some_function") # Name your function here
+	if result is GDScriptFunctionState:
+		result = yield(result, "completed") # Wait for the function to complete
+	if result: # If result is not null we succeed
+		return succeed()
+	else:
+		return fail()
 
 
 func _fresh_tick(agent: Node, blackboard: Blackboard) -> bool:
-	# Remove this line and do whatever you want
-	return ._fresh_tick(agent, blackboard)
+	if fresh:
+		var result: bool = agent.call("find_path", Vector2(100, 100)) # For example, on the first tick we find the path to a point. 
+		if result: # Let's suppose if a path is found we return true
+			fresh = false # This function won't be executed anymore
+			return succeed()
+		else:
+			push_warning("Path not found!")
+			return fail() # This will run again until we find a path.
  
  # END OF VIRTUAL FUNCTIONS
 
