@@ -1,6 +1,10 @@
 class_name BehaviorTree, "icons/bt.svg" 
 extends Node
 
+# This is your main node. Put one of these at the root of the scene and start adding BTNodes.
+# A Behavior Tree only accepts ONE entry point (so one child), for example a BTSequence or a BTSelector.
+
+
 export(bool) var is_active: bool = false
 export(NodePath) var _blackboard
 export(NodePath) var _agent
