@@ -1,4 +1,4 @@
-class_name BTGuard, "icons/bt_guard.svg"
+class_name BTGuard, "icons/btguard.svg"
 extends BTDecorator
 
 export(bool) var start_locked = false

@@ -4,8 +4,7 @@ extends Node
 export(bool) var is_active: bool = false
 export(NodePath) var _blackboard
 export(NodePath) var _agent
-export(String, "idle", "physics") var sync_mode
-
+export(String, "Idle", "Physics") var sync_mode
 
 
 func _ready():
