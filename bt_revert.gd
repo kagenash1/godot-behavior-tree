@@ -1,6 +1,7 @@
 class_name BTRevert, "icons/btrevert.svg"
 extends BTDecorator
 
+# Succeeds if the child fails and viceversa.
 
 
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
