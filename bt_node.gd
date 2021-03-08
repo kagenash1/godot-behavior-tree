@@ -34,15 +34,16 @@ class BTNodeState:
 		failure = false
 		running = true
 
+
 # Emitted after a tick() call. True is success, false is failure. Can be useful
 # to get info on the state of other BTNodes
 signal tick(result)
 
-export(bool) var is_active = true # Turn this off to block a branch of the BT
-export(bool) var debug = false # Turn this on to print the name of the tick()ed BTNode
+export(bool) var is_active = true # Turn this off to block a branch of the tree
+export(bool) var debug = false # Turn this on to print the name of the BTNode
 
 var state: BTNodeState = BTNodeState.new()
-var fresh: bool = true
+
 
 
 # You can use these as setters and getters for the BTNodeState of a BTNode
@@ -50,18 +51,30 @@ func succeed() -> bool:
 	state.set_success()
 	emit_signal("tick", true)
 	return true
+
+
 func fail() -> bool:
 	state.set_failure()
 	emit_signal("tick", false)
 	return false
+
+
 func run():
 	state.set_running()
+
+
 func succeeded() -> bool:
 	return state.success
+
+
 func failed() -> bool:
 	return state.failure
+
+
 func running() -> bool:
 	return state.running
+
+
 func get_state() -> String:
 	if succeeded():
 		return "success"
@@ -69,46 +82,35 @@ func get_state() -> String:
 		return "failure"
 	else:
 		return "running"
-func set_state(rhs: BTNodeState):
-	if rhs.success:
+
+
+func set_state(rhs: BTNode):
+	if rhs.succeeded():
 		return succeed()
-	elif rhs.failure:
+	elif rhs.failed():
 		return fail()
 	else:
 		run()
 
-# BEGINNING OF VIRTUAL FUNCTIONS
 
-# These are the base functions to override in your BTAction and BTCondition
-
-# This is the most important function. Your behavior goes here
+# This is the most important function. Override this and put your behavior here.
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	return succeed()
-
-
-# This is executed as long as fresh == true, supposedly to have a different behavior on the first tick
-func _fresh_tick(agent: Node, blackboard: Blackboard) -> bool:
-	fresh = false # When this is false, this function will not be called anymore
-	return fresh
-
-# END OF VIRTUAL FUNCTIONS
-
-
-# DO NOT override this
-func fresh_tick(agent: Node, blackboard: Blackboard) -> bool:
-	return _fresh_tick(agent, blackboard)
 
 
 # DO NOT override this
 func tick(agent: Node, blackboard: Blackboard) -> bool:
 	if not is_active or running():
 		return fail()
-	if fresh:
-		if fresh_tick(agent, blackboard):
-			return fail()
 	if debug:
 		print(name + " at " + get_path())
-	return _tick(agent, blackboard)
+	
+	run() 
+	
+	var result = _tick(agent, blackboard)
+	if result is GDScriptFunctionState:
+		result = yield(result, "completed")
+	return result
 
 
 func _ready():

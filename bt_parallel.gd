@@ -1,5 +1,5 @@
 class_name BTParallel, "icons/btparallel.svg"
-extends BTNode
+extends BTComposite
 
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	for c in get_children():

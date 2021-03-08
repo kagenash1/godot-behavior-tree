@@ -1,5 +1,5 @@
 class_name BTGuard, "icons/bt_guard.svg"
-extends BTNode
+extends BTDecorator
 
 export(bool) var start_locked = false
 export(bool) var permanent = false
@@ -13,7 +13,6 @@ var locked: bool = false
 
 onready var unlocker: BTNode = get_node_or_null(_unlocker)
 onready var locker: BTNode = get_node_or_null(_locker)
-onready var bt_child: BTNode = get_child(0) as BTNode
 
 
 
@@ -31,8 +30,10 @@ func lock():
 		locked = false
 
 
-func check_lock():
-	if lock_if == "Always" or (succeeded() and lock_if == "Success") or (failed() and lock_if == "Failure"):
+func check_lock(current_locker: BTNode):
+	if ((lock_if == "Always"  and not current_locker.running()) 
+	or ( lock_if == "Success" and current_locker.succeeded()) 
+	or ( lock_if == "Failure" and current_locker.failed())):
 		lock()
 
 
@@ -41,24 +42,18 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 		return fail()
 	var result = bt_child.tick(agent, blackboard)
 	if bt_child.running() and result is GDScriptFunctionState:
-		run()
-		result = yield(result, "completed")
+		yield(result, "completed")
 	if not locker:
-		check_lock()
-		return set_state(bt_child.state)
-	elif result == true:
-		return succeed()
-	else:
-		return fail()
+		check_lock(bt_child)
+	return set_state(bt_child)
 
 
 func _on_locker_tick(_result):
-	check_lock()
-	set_state(locker.state)
+	check_lock(locker)
+	set_state(locker)
 
 
 func _ready():
-	assert(get_child_count() == 1)
 	if start_locked:
 		lock()
 	if locker != null:
