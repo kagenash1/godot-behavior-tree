@@ -1,6 +1,10 @@
 class_name BTNode, "icons/btnode.svg" 
 extends Node
 
+# Base class from which every node in the behavior tree inherits. 
+# You don't usually need to instance this node directly.
+# To define your behaviors, use and extend BTLeaf instead.
+
 
 class BTNodeState:
 	var success: bool = true  setget set_success
