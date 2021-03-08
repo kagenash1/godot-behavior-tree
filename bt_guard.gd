@@ -1,6 +1,16 @@
 class_name BTGuard, "icons/btguard.svg"
 extends BTDecorator
 
+# Can lock the whole branch below itself. The lock happens either after the child ticks, 
+# or after any other BTNode ticks. Then it stays locked for a given time, or until another
+# specified BTNode ticks. You can set all this from the inspector.
+# If you don't specify a locker, the lock_if variable will be based on the child.
+# If you don't specify an unlocker, the unlock_if variable is useless and only the lock_time will 
+# be considered, and viceversa.
+# You can also choose to lock permanently or to lock on startup.
+# A locked BTGuard will always return fail().
+
+
 export(bool) var start_locked = false
 export(bool) var permanent = false
 export(NodePath) var _locker
