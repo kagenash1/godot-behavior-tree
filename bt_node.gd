@@ -48,6 +48,25 @@ export(bool) var debug = false # Turn this on to print the name of the BTNode
 var state: BTNodeState = BTNodeState.new()
 
 
+# Called after tick()
+func _on_tick(result: bool):
+	return result
+
+
+# This is the most important function. Override this and put your behavior here.
+func _tick(agent: Node, blackboard: Blackboard) -> bool:
+	return succeed()
+
+
+func _ready():
+	if is_active:
+		succeed()
+	else:
+		push_warning(name + ", ID: " + get_path() + " was deactivated.")
+		fail()
+	
+	connect("tick", self, "_on_tick")
+
 
 # You can use these as setters and getters for the BTNodeState of a BTNode
 func succeed() -> bool:
@@ -96,11 +115,6 @@ func set_state(rhs: BTNode):
 		run()
 
 
-# This is the most important function. Override this and put your behavior here.
-func _tick(agent: Node, blackboard: Blackboard) -> bool:
-	return succeed()
-
-
 # DO NOT override this
 func tick(agent: Node, blackboard: Blackboard) -> bool:
 	if not is_active or running():
@@ -118,9 +132,3 @@ func tick(agent: Node, blackboard: Blackboard) -> bool:
 	return result
 
 
-func _ready():
-	if is_active:
-		succeed()
-	else:
-		push_warning(name + ", ID: " + get_path() + " was deactivated.")
-		fail()

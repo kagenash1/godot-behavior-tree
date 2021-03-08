@@ -6,10 +6,11 @@ extends BTComposite
 # Fails if ANY of the children fails.
 
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
+	var result
 	for c in get_children():
-		var bt_child: BTNode = c
+		bt_child = c
 		
-		var result = bt_child.tick(agent, blackboard)
+		result = bt_child.tick(agent, blackboard)
 		if bt_child.running() and result is GDScriptFunctionState:
 			yield(result, "completed")
 		

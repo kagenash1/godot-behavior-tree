@@ -6,7 +6,7 @@ extends BTComposite
 
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	for c in get_children():
-		var bt_child: BTNode = c
+		bt_child = c
 		bt_child.tick(agent, blackboard)
 	
 	return succeed()

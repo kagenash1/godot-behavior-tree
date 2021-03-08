@@ -5,6 +5,8 @@ extends BTLeaf
 
 export(float) var wait_time 
 
+
+
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	yield(get_tree().create_timer(wait_time, false), "timeout")
 	return succeed()

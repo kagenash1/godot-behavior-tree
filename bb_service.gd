@@ -23,34 +23,17 @@ onready var agent: Node = get_node_or_null(_agent)
 
 
 # BEGINNING OF VIRTUAL FUNCTIONS
-# Override these in your custom services if you plan on using them in parallel (is_active == true)
+# Override these if you plan on running the service in parallel (is_active == true)
 
 func _run():
 	return true
+
 
 func _stop():
 	is_active = false
 	return is_active
 
 # END OF VIRTUAL FUNCTIONS
-
-
-# There are several cases where, instead, you just want to have some kind of callback in the service,
-# rather than running it several times, to optimise performance.
-# For example suppose we have an Area called PlayerDetector which collides only with the 
-# 'player' collision layer.
-# We connect that area to the following method:
-#
-# func _on_PlayerDetector_area_entered(area: Area):
-#	if area and area.owner is Player:
-#		blackboard.set_data("player_position", area.owner.position)
-#		blackboard.set_data("player_nearby", true)
-#		
-#
-# func _on_PlayerDetector_area_exited(area: Area):
-#	if area and area.owner is Player:
-#		blackboard.set_data("player_position", null)
-#		blackboard.set_data("player_nearby", false)
 
 
 # Do not override this
@@ -69,3 +52,21 @@ func stop():
 func _ready():
 	if is_active:
 		run()
+
+
+# There are several cases where, instead, you just want to have some kind of callback in the service,
+# rather than running it several times, to optimise performance.
+# For example suppose we have an Area called PlayerDetector which collides only with the 
+# 'player' collision layer.
+# We connect that area to the following method:
+#
+# func _on_PlayerDetector_area_entered(area: Area):
+#	if area and area.owner is Player:
+#		blackboard.set_data("player_position", area.owner.position)
+#		blackboard.set_data("player_nearby", true)
+#		
+#
+# func _on_PlayerDetector_area_exited(area: Area):
+#	if area and area.owner is Player:
+#		blackboard.set_data("player_position", null)
+#		blackboard.set_data("player_nearby", false)

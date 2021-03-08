@@ -9,6 +9,7 @@ onready var bt_child: BTNode = get_child(0) as BTNode
 
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	var result = bt_child.tick(agent, blackboard)
+	
 	if bt_child.running() and result is GDScriptFunctionState:
 		yield(result, "completed")
 	
