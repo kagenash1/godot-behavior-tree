@@ -5,7 +5,6 @@ extends Node
 # You don't usually need to instance this node directly.
 # To define your behaviors, use and extend BTLeaf instead.
 
-
 class BTNodeState:
 	var success: bool = true  setget set_success
 	var failure: bool = false setget set_failure
@@ -106,6 +105,7 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 func tick(agent: Node, blackboard: Blackboard) -> bool:
 	if not is_active or running():
 		return fail()
+	
 	if debug:
 		print(name + " at " + get_path())
 	
@@ -114,6 +114,7 @@ func tick(agent: Node, blackboard: Blackboard) -> bool:
 	var result = _tick(agent, blackboard)
 	if result is GDScriptFunctionState:
 		result = yield(result, "completed")
+	
 	return result
 
 

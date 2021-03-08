@@ -10,7 +10,6 @@ extends BTDecorator
 # You can also choose to lock permanently or to lock on startup.
 # A locked BTGuard will always return fail().
 
-
 export(bool) var start_locked = false
 export(bool) var permanent = false
 export(NodePath) var _locker
@@ -28,8 +27,10 @@ onready var locker: BTNode = get_node_or_null(_locker)
 
 func lock():
 	locked = true
+	
 	if permanent:
 		return
+	
 	elif unlocker:
 		while locked:
 			var result = yield(unlocker, "tick")
@@ -50,11 +51,14 @@ func check_lock(current_locker: BTNode):
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	if locked:
 		return fail()
+	
 	var result = bt_child.tick(agent, blackboard)
 	if bt_child.running() and result is GDScriptFunctionState:
 		yield(result, "completed")
+	
 	if not locker:
 		check_lock(bt_child)
+	
 	return set_state(bt_child)
 
 
