@@ -5,7 +5,7 @@ A GDScript implementation of a behavior tree for game AI, based on native Godot 
 
 INSTRUCTIONS:
 - Copy files in a folder in your project. May have to restart the editor.
-- Click the node creation icon. You should see new nodes available. You must use a BehaviourTree as the root node, which should have only a single child. This child can be any of the nodes under the BTNode category, which all inherit from the BTNode class.
+- Click the node creation icon. You should see new nodes available (if you don't, restart Godot). You must use a BehaviourTree as the root node, which should have only a single child. This child can be any of the nodes under the BTNode category, which all inherit from the BTNode class.
 - After creating a behavior tree, you must specify who is the owner of the AI (the Agent) and what Blackboard is being used. Blackboards should be created separately and provided with BBServices which act as a kind of 'sensors' to write data on the Blackboard.
 - A Behavior Tree flows executing each of its children, which return some kind of success or failure state. Only those branches following a successful node will be executed. 
 - The flow of the tree is defined by the so called composite nodes: BTSequence, BTSelector and BTParallel. A sequence is successfull if all the children are successful, while it fails if one of the children fails. The selector is the logical opposite, it succeeds if one children succeeds, and fails if all the children fail. A parallel will run all the children and always succeed regardless. 
