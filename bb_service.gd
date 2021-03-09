@@ -26,12 +26,11 @@ onready var agent: Node = get_node_or_null(_agent)
 # Override these if you plan on running the service in parallel (is_active == true)
 
 func _run():
-	return true
+	pass
 
 
 func _stop():
 	is_active = false
-	return is_active
 
 # END OF VIRTUAL FUNCTIONS
 
@@ -39,6 +38,7 @@ func _stop():
 # Do not override this
 func run():
 	is_active = true
+	
 	while is_active:
 		_run()
 		yield(get_tree().create_timer(frequency, false), "timeout")

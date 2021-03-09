@@ -24,7 +24,8 @@ func _ready():
 	
 	while is_active:
 		tick_result = bt_root.tick(agent, blackboard)
-		if bt_root.running() and tick_result is GDScriptFunctionState:
+		
+		if tick_result is GDScriptFunctionState:
 			tick_result = yield(tick_result, "completed")
 		
 		if sync_mode == "idle":

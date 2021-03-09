@@ -126,8 +126,17 @@ func tick(agent: Node, blackboard: Blackboard) -> bool:
 	run() 
 	
 	var result = _tick(agent, blackboard)
+	
 	if result is GDScriptFunctionState:
+		if not running():
+			push_error(name + " exited execution, but it's not running().")
+			assert(false)
+		
 		result = yield(result, "completed")
+	
+	if running():
+		push_error(name + " completed but it is still running(). Must either succeed() or fail().")
+		assert(false)
 	
 	return result
 

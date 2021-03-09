@@ -53,8 +53,9 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 		return fail()
 	
 	var result = bt_child.tick(agent, blackboard)
-	if bt_child.running() and result is GDScriptFunctionState:
-		yield(result, "completed")
+	
+	if result is GDScriptFunctionState:
+		result = yield(result, "completed")
 	
 	if not locker:
 		check_lock(bt_child)

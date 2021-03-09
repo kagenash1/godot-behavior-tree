@@ -19,7 +19,7 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 		bt_child = c
 		result = bt_child.tick(agent, blackboard)
 		
-		if bt_child.running() and result is GDScriptFunctionState:
+		if result is GDScriptFunctionState:
 			result = yield(result, "completed")
 	
 	return succeed()
