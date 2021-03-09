@@ -5,8 +5,9 @@ extends BTDecorator
 
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	var result = bt_child.tick(agent, blackboard)
-	if bt_child.running() and result is GDScriptFunctionState:
-		yield(result, "completed")
+	
+	if result is GDScriptFunctionState:
+		result = yield(result, "completed")
 	
 	if bt_child.succeeded():
 		return fail()

@@ -48,6 +48,25 @@ export(bool) var debug = false # Turn this on to print the name of the BTNode
 var state: BTNodeState = BTNodeState.new()
 
 
+# Called after tick()
+func _on_tick(result: bool):
+	pass
+
+
+# This is the most important function. Override this and put your behavior here.
+func _tick(agent: Node, blackboard: Blackboard) -> bool:
+	return succeed()
+
+
+func _ready():
+	if is_active:
+		succeed()
+	else:
+		push_warning(name + ", ID: " + get_path() + " was deactivated.")
+		fail()
+	
+	connect("tick", self, "_on_tick")
+
 
 # You can use these as setters and getters for the BTNodeState of a BTNode
 func succeed() -> bool:
@@ -96,31 +115,32 @@ func set_state(rhs: BTNode):
 		run()
 
 
-# This is the most important function. Override this and put your behavior here.
-func _tick(agent: Node, blackboard: Blackboard) -> bool:
-	return succeed()
-
-
 # DO NOT override this
 func tick(agent: Node, blackboard: Blackboard) -> bool:
-	if not is_active or running():
+	if not is_active:
 		return fail()
 	
+	if running():
+		return false
+	
 	if debug:
-		print(name + " at " + get_path())
+		print(name)
 	
 	run() 
 	
 	var result = _tick(agent, blackboard)
+	
 	if result is GDScriptFunctionState:
+		if not running():
+			push_error(name + " exited execution, but it's not running().")
+			assert(false)
+		
 		result = yield(result, "completed")
+	
+	if running():
+		push_error(name + " completed but it is still running(). Must either succeed() or fail().")
+		assert(false)
 	
 	return result
 
 
-func _ready():
-	if is_active:
-		succeed()
-	else:
-		push_warning(name + ", ID: " + get_path() + " was deactivated.")
-		fail()
