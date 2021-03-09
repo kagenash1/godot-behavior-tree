@@ -1,7 +1,7 @@
 class_name BTAlways 
 extends BTDecorator
 
-# Executes the child and always either succeeds or fails, depending on what you set from the inspector
+# Executes the child and always either succeeds or fails.
 
 export(String, "fail", "succeed") var always_what
 

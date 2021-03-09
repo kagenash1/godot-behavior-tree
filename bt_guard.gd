@@ -30,7 +30,6 @@ func lock():
 	
 	if permanent:
 		return
-	
 	elif unlocker:
 		while locked:
 			var result = yield(unlocker, "tick")

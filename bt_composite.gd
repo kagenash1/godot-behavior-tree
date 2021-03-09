@@ -1,7 +1,7 @@
 class_name BTComposite
 extends BTNode
 
-# Executes every child, waiting for completion
+# Executes every child, waiting for completion. Always succeeds.
 
 var bt_child: BTNode # Used to iterate over children
 
@@ -9,7 +9,6 @@ var bt_child: BTNode # Used to iterate over children
 
 func _on_tick(result: bool):
 	bt_child = null
-	return result
 
 
 func _tick(agent: Node, blackboard: Blackboard) -> bool:

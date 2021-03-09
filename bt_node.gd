@@ -50,7 +50,7 @@ var state: BTNodeState = BTNodeState.new()
 
 # Called after tick()
 func _on_tick(result: bool):
-	return result
+	pass
 
 
 # This is the most important function. Override this and put your behavior here.
@@ -117,11 +117,14 @@ func set_state(rhs: BTNode):
 
 # DO NOT override this
 func tick(agent: Node, blackboard: Blackboard) -> bool:
-	if not is_active or running():
+	if not is_active:
 		return fail()
 	
+	if running():
+		return false
+	
 	if debug:
-		print(name + " at " + get_path())
+		print(name)
 	
 	run() 
 	

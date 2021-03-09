@@ -12,7 +12,7 @@ extends BTNode
 
 # Called after tick()
 func _on_tick(result: bool):
-	return ._on_tick(result)
+	pass
 
 
 # The following is an abstract example of good practices when defining your actions
