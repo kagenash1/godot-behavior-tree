@@ -1,4 +1,4 @@
-class_name BTDecorator
+class_name BTDecorator, "icons/btdecorator.svg"
 extends BTNode
 
 # Accepts only ONE child. Ticks and sets its state the same as the child.
