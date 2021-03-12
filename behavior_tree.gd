@@ -25,6 +25,7 @@ func _ready():
 	while is_active:
 		if bt_root.debug:
 			print()
+		
 		tick_result = bt_root.tick(agent, blackboard)
 		
 		if tick_result is GDScriptFunctionState:

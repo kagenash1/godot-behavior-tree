@@ -1,4 +1,4 @@
-class_name BTAlways 
+class_name BTAlways, "icons/btalways.svg"
 extends BTDecorator
 
 # Executes the child and always either succeeds or fails.

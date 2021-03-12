@@ -43,6 +43,6 @@ func get_data(key: String):
 			return value
 
 
-func has_data(key: String):
+func has_data(key: String) -> bool:
 	return data.has(key)
 
