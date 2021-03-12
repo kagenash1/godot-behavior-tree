@@ -8,8 +8,8 @@ extends BTComposite
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	randomize()
 	var result
-    var n_children = get_child_count()
-    
+	var n_children = get_child_count()
+	
 	for i in n_children:
 		var rand_idx = randi() % n_children
 		bt_child = get_child(rand_idx)

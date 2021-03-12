@@ -71,11 +71,11 @@ func _ready():
 # You can use these as setters and getters for the BTNodeState of a BTNode
 func succeed() -> bool:
 	state.set_success()
-    return true
+	return true
 
 
 func fail() -> bool:
-    state.set_failure()
+	state.set_failure()
 	return false
 
 
@@ -107,8 +107,8 @@ func get_state() -> String:
 func set_state(rhs: BTNode) -> bool:
 	if rhs.succeeded():
 		return succeed()
-	elif rhs.failed():
-        return fail()
+	else:
+		return fail()
 
 
 # DO NOT override this
@@ -126,13 +126,13 @@ func tick(agent: Node, blackboard: Blackboard) -> bool:
 	
 	var result = _tick(agent, blackboard)
 	
-    if result is GDScriptFunctionState:
-        assert(running())
+	if result is GDScriptFunctionState:
+		assert(running())
 		result = yield(result, "completed")
 	
 	assert(not running())
-    
-    emit_signal("tick", result)
+	
+	emit_signal("tick", result)
 	return result
 
 
