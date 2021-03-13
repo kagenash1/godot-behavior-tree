@@ -3,6 +3,8 @@
 
 A GDScript implementation of a behavior tree for game AI, based on native Godot nodes and using the built in scene tree editor.
 
+To try out the example, copy the example folder into your project and run the 'agent.tscn' scene. To see how the behavior tree is built, check the "ex_behavior_tree.tscn" scene.
+
 INSTRUCTIONS:
 - Copy files in a folder in your project. May have to restart the editor.
 - Click the node creation icon. You should see new nodes available (if you don't, restart Godot). You must use a BehaviourTree as the root node, which should have only a single child. This child can be any of the nodes under the BTNode category, which all inherit from the BTNode class.
