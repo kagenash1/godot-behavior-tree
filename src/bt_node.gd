@@ -1,4 +1,4 @@
-class_name BTNode, "icons/btnode.svg" 
+class_name BTNode, "../icons/btnode.svg" 
 extends Node
 
 # Base class from which every node in the behavior tree inherits. 
@@ -133,6 +133,7 @@ func tick(agent: Node, blackboard: Blackboard) -> bool:
 	assert(not running())
 	
 	emit_signal("tick", result)
+	
 	return result
 
 

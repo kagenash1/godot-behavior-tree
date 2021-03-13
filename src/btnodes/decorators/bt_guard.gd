@@ -1,4 +1,4 @@
-class_name BTGuard, "icons/btguard.svg"
+class_name BTGuard, "../../../icons/btguard.svg"
 extends BTDecorator
 
 # Can lock the whole branch below itself. The lock happens either after the child ticks, 

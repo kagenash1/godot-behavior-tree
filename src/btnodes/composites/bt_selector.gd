@@ -1,4 +1,4 @@
-class_name BTSelector, "icons/btselector.svg"
+class_name BTSelector, "../../../icons/btselector.svg"
 extends BTComposite
 
 # Ticks its children until ANY of them succeeds, thus succeeding.

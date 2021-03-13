@@ -1,4 +1,4 @@
-class_name BTRevert, "icons/btrevert.svg"
+class_name BTRevert, "../../../icons/btrevert.svg"
 extends BTDecorator
 
 # Succeeds if the child fails and viceversa.

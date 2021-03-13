@@ -1,4 +1,4 @@
-class_name BTLeaf, "icons/btleaf.svg" 
+class_name BTLeaf, "../../icons/btleaf.svg" 
 extends BTNode
 
 # Leaf nodes are used to implement your own behavior logic.

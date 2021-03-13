@@ -1,4 +1,4 @@
-class_name BehaviorTree, "icons/bt.svg" 
+class_name BehaviorTree, "../icons/bt.svg" 
 extends Node
 
 # This is your main node. Put one of these at the root of the scene and start adding BTNodes.
@@ -8,7 +8,7 @@ export(bool) var is_active: bool = false
 export(NodePath) var _blackboard
 export(NodePath) var _agent
 export(String, "idle", "physics") var sync_mode
-
+export(bool) var debug = false
 
 
 func _ready():
@@ -23,7 +23,7 @@ func _ready():
 	var tick_result
 	
 	while is_active:
-		if bt_root.debug:
+		if debug:
 			print()
 		
 		tick_result = bt_root.tick(agent, blackboard)

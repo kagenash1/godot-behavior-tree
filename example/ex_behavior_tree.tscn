@@ -1,0 +1,43 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://godot-behavior-tree/src/btnodes/decorators/bt_always.gd" type="Script" id=1]
+[ext_resource path="res://godot-behavior-tree/src/behavior_tree.gd" type="Script" id=2]
+[ext_resource path="res://godot-behavior-tree/example/conditions/is_target_aquired.gd" type="Script" id=3]
+[ext_resource path="res://godot-behavior-tree/src/btnodes/composites/bt_sequence.gd" type="Script" id=4]
+[ext_resource path="res://godot-behavior-tree/src/btnodes/leaves/bt_wait.gd" type="Script" id=5]
+[ext_resource path="res://godot-behavior-tree/example/actions/shoot.gd" type="Script" id=6]
+[ext_resource path="res://godot-behavior-tree/example/actions/reload.gd" type="Script" id=7]
+[ext_resource path="res://godot-behavior-tree/example/conditions/is_out_of_ammo.gd" type="Script" id=8]
+
+[node name="BehaviorTree" type="Node"]
+script = ExtResource( 2 )
+is_active = true
+debug = true
+
+[node name="BTSequence" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="Wait 1 sec" type="Node" parent="BTSequence"]
+script = ExtResource( 5 )
+debug = true
+wait_time = 1.0
+
+[node name="Always succeed" type="Node" parent="BTSequence"]
+script = ExtResource( 1 )
+always_what = "succeed"
+
+[node name="Out of ammo\?" type="Node" parent="BTSequence/Always succeed"]
+script = ExtResource( 8 )
+debug = true
+
+[node name="Reload" type="Node" parent="BTSequence/Always succeed/Out of ammo\?"]
+script = ExtResource( 7 )
+debug = true
+
+[node name="TargetAquired\?" type="Node" parent="BTSequence"]
+script = ExtResource( 3 )
+debug = true
+
+[node name="Shoot" type="Node" parent="BTSequence/TargetAquired\?"]
+script = ExtResource( 6 )
+debug = true

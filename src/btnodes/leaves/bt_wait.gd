@@ -1,4 +1,4 @@
-class_name BTWait, "icons/btwait.svg"
+class_name BTWait, "../../../icons/btwait.svg"
 extends BTLeaf
 
 # Waits for wait_time seconds, then succeeds.

@@ -1,4 +1,4 @@
-class_name BTComposite, "icons/btcomposite.svg"
+class_name BTComposite, "../../icons/btcomposite.svg"
 extends BTNode
 
 # Executes every child, waiting for completion. Always succeeds.
