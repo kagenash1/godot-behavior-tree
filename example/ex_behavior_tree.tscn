@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://godot-behavior-tree/src/btnodes/decorators/bt_always.gd" type="Script" id=1]
 [ext_resource path="res://godot-behavior-tree/src/behavior_tree.gd" type="Script" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://godot-behavior-tree/example/actions/shoot.gd" type="Script" id=6]
 [ext_resource path="res://godot-behavior-tree/example/actions/reload.gd" type="Script" id=7]
 [ext_resource path="res://godot-behavior-tree/example/conditions/is_out_of_ammo.gd" type="Script" id=8]
+[ext_resource path="res://godot-behavior-tree/src/btnodes/composites/bt_random_selector.gd" type="Script" id=9]
+[ext_resource path="res://godot-behavior-tree/src/btnodes/decorators/bt_repeat.gd" type="Script" id=10]
 
 [node name="BehaviorTree" type="Node"]
 script = ExtResource( 2 )
@@ -17,10 +19,18 @@ debug = true
 [node name="BTSequence" type="Node" parent="."]
 script = ExtResource( 4 )
 
-[node name="Wait 1 sec" type="Node" parent="BTSequence"]
+[node name="BTRandomSelector" type="Node" parent="BTSequence"]
+script = ExtResource( 9 )
+
+[node name="Wait 1 sec" type="Node" parent="BTSequence/BTRandomSelector"]
 script = ExtResource( 5 )
 debug = true
 wait_time = 1.0
+
+[node name="Wait 2 sec" type="Node" parent="BTSequence/BTRandomSelector"]
+script = ExtResource( 5 )
+debug = true
+wait_time = 2.0
 
 [node name="Always succeed" type="Node" parent="BTSequence"]
 script = ExtResource( 1 )
@@ -38,6 +48,10 @@ debug = true
 script = ExtResource( 3 )
 debug = true
 
-[node name="Shoot" type="Node" parent="BTSequence/TargetAquired\?"]
+[node name="BTRepeat" type="Node" parent="BTSequence/TargetAquired\?"]
+script = ExtResource( 10 )
+times_to_repeat = 2
+
+[node name="Shoot" type="Node" parent="BTSequence/TargetAquired\?/BTRepeat"]
 script = ExtResource( 6 )
 debug = true

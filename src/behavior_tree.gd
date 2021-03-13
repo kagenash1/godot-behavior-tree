@@ -13,12 +13,13 @@ export(bool) var debug = false
 
 func _ready():
 	assert(get_child_count() == 1)
-	
+	yield(get_tree(), "idle_frame") # To ensure the agent is ready.
+	run()
+
+
+func run():
 	var blackboard: Blackboard = get_node(_blackboard)
 	var bt_root: BTNode = get_child(0)
-	
-	yield(get_tree(), "idle_frame") # To ensure the agent is ready.
-	
 	var agent: Node = get_node(_agent)
 	var tick_result
 	
@@ -35,4 +36,3 @@ func _ready():
 			yield(get_tree(), "idle_frame") 
 		else:
 			yield(get_tree(), "physics_frame")
-

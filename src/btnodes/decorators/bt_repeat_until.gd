@@ -5,10 +5,11 @@ extends BTDecorator
 
 export(int, "failure", "success") var until_what
 
+onready var expected = bool(until_what)
+
 
 
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
-	var expected = bool(until_what)
 	var result = not expected
 	
 	while result != expected:

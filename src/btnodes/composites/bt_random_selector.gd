@@ -5,14 +5,16 @@ extends BTComposite
 # Attempts a number of ticks equal to the number of children. If no successful
 # child was found, it fails.
 
+onready var n_children = get_child_count()
+
+
+
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	randomize()
 	var result
-	var n_children = get_child_count()
 	
 	for i in n_children:
-		var rand_idx = randi() % n_children
-		bt_child = get_child(rand_idx)
+		bt_child = children[randi() % n_children]
 		
 		result = bt_child.tick(agent, blackboard)
 		

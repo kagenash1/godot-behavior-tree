@@ -8,6 +8,8 @@ extends BTNode
 # to you, but you may have some specific flow in your game. In that case,
 # you can extend this script and define it yourself.
 
+onready var children: Array = get_children() as Array
+
 var bt_child: BTNode # Used to iterate over children
 
 
@@ -23,7 +25,7 @@ func _on_tick(result: bool):
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	var result
 	
-	for c in get_children():
+	for c in children:
 		bt_child = c
 		result = bt_child.tick(agent, blackboard)
 		

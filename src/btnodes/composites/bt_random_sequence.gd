@@ -6,8 +6,9 @@ extends BTComposite
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	randomize()
 	var result
+	children.shuffle()
 	
-	for c in get_children().shuffle():
+	for c in children:
 		bt_child = c
 		
 		result = bt_child.tick(agent, blackboard)
