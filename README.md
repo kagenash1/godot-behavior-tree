@@ -6,7 +6,7 @@ A GDScript implementation of a behavior tree for game AI, based on native Godot 
 To try out the example, copy the example folder into your project and run the 'agent.tscn' scene. To see how the behavior tree is built, check the "ex_behavior_tree.tscn" scene.
 
 [![alt text](https://raw.githubusercontent.com/GabrieleTorini/godot-behavior-tree/main/images/Screenshot%202021-03-13%20085615.png)]
-[!(https://raw.githubusercontent.com/GabrieleTorini/godot-behavior-tree/main/images/Screenshot%202021-03-13%20085633.png)]
+[![alt text](https://raw.githubusercontent.com/GabrieleTorini/godot-behavior-tree/main/images/Screenshot%202021-03-13%20085633.png)]
 
 INSTRUCTIONS:
 - Copy files in a folder in your project. May have to restart the editor.
