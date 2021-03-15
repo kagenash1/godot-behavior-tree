@@ -1,4 +1,4 @@
-class_name BTRepeat, "../../../icons/btrepeat.svg"
+class_name BTRepeat, "res://addons/behavior_tree/icons/btrepeat.svg"
 extends BTDecorator
 
 # Executes child "iterations" times and returns the last state and tick result

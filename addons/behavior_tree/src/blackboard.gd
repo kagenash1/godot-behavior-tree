@@ -1,4 +1,4 @@
-class_name Blackboard, "../icons/blackboard.svg" 
+class_name Blackboard, "res://addons/behavior_tree/icons/blackboard.svg" 
 extends Node
 
 # This is the database where all your variables go. Here you keep track of 

@@ -1,4 +1,4 @@
-class_name BehaviorTree, "../icons/bt.svg" 
+class_name BehaviorTree, "res://addons/behavior_tree/icons/bt.svg" 
 extends Node
 
 # This is your main node. Put one of these at the root of the scene and start adding BTNodes.

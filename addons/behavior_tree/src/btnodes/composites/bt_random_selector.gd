@@ -1,4 +1,4 @@
-class_name BTRandomSelector, "../../../icons/btrndselector.svg"
+class_name BTRandomSelector, "res://addons/behavior_tree/icons/btrndselector.svg"
 extends BTComposite
 
 # Executes a random child and is successful at the first successful tick.

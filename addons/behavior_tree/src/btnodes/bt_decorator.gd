@@ -1,4 +1,4 @@
-class_name BTDecorator, "../../icons/btdecorator.svg"
+class_name BTDecorator, "res://addons/behavior_tree/icons/btdecorator.svg"
 extends BTNode
 
 # Accepts only ONE child. Ticks and sets its state the same as the child.
