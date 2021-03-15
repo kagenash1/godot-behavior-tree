@@ -3,12 +3,15 @@
 
 A GDScript implementation of a behavior tree for game AI, based on native Godot nodes and using the built in scene tree editor.
 
-To try out the example, copy the example folder into your project and run the 'agent.tscn' scene. To see how the behavior tree is built, check the "ex_behavior_tree.tscn" scene.
+INSTALLATION
+- Copy the 'addons' folder into the main directory of your project.
+- Enable the plugin from project settings, THEN RESTART Godot, otherwise it will not recognize the new classes (that's a bug of the engine).
+- Optionally, you can also drag the bt_example folder into the main directory of your project.
+- To see the example working, run the agent.tscn scene. The ex_behavior_tree.tscn scene is an example of how the tree is built.
 
 ![alt text](https://raw.githubusercontent.com/GabrieleTorini/godot-behavior-tree/main/bt_images/Screenshot%202021-03-13%20085615.png)![alt text](https://raw.githubusercontent.com/GabrieleTorini/godot-behavior-tree/main/bt_images/Screenshot%202021-03-13%20085633.png)
 
 INSTRUCTIONS:
-- Copy files in a folder in your project. May have to restart the editor.
 - Click the node creation icon. You should see new nodes available (if you don't, restart Godot). You must use a BehaviourTree as the root node, which should have only a single child. This child can be any of the nodes under the BTNode category, which all inherit from the BTNode class.
 - After creating a behavior tree, you must specify who is the owner of the AI (the Agent) and what Blackboard is being used. Blackboards can be put anywhere (given it is outside the tree), and even shared among different trees. The system is flexible enough to allow you to decide how and when to update your blackboard data. For example, you can make a plain Node with a script that handles updating the blackboard, eg. with signal callbacks or even in process(). Or you can do it from anywhere else, even from inside the tree, just make sure to design things in a way you can maintain and keep track of.
 - A Behavior Tree flows executing each of its children, which return some kind of success or failure state. Only those branches following a successful node will be executed.  A BTNode must return either success or failure, and can suspend execution only with a yield() call, after which it will remain in a running state until execution is completed. When a BTNode is in running state, the tree will progressively suspend execution (with the only exeption being BTParallel ) until all of the children complete execution. This is for optimisation purposes.
