@@ -18,9 +18,6 @@ func _ready():
 	assert(get_child_count() > 1)
 
 
-func _on_tick(result: bool):
-	bt_child = null
-
 
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	var result

@@ -16,13 +16,26 @@ export(NodePath) var _locker
 export(String, "Failure", "Success", "Always") var lock_if
 export(NodePath) var _unlocker
 export(int, "Failure", "Success") var unlock_if
-export(float) var lock_time = get_physics_process_delta_time()
+export(float) var lock_time = 0.05
 
 var locked: bool = false
 
 onready var unlocker: BTNode = get_node_or_null(_unlocker)
 onready var locker: BTNode = get_node_or_null(_locker)
 
+
+
+func _ready():
+	if start_locked:
+		lock()
+	
+	if locker:
+		locker.connect("tick", self, "_on_locker_tick")
+
+
+func _on_locker_tick(_result):
+	check_lock(locker)
+	set_state(locker.state)
 
 
 func lock():
@@ -50,25 +63,11 @@ func check_lock(current_locker: BTNode):
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	if locked:
 		return fail()
-	
-	var result = bt_child.tick(agent, blackboard)
-	
-	if result is GDScriptFunctionState:
-		result = yield(result, "completed")
-	
+	return ._tick(agent, blackboard)
+
+
+func _post_tick(agent: Node, blackboard: Blackboard, result: bool) -> void:
 	if not locker:
 		check_lock(bt_child)
-	
-	return set_state(bt_child)
 
 
-func _on_locker_tick(_result):
-	check_lock(locker)
-	set_state(locker)
-
-
-func _ready():
-	if start_locked:
-		lock()
-	if locker != null:
-		locker.connect("tick", self, "_on_locker_tick")

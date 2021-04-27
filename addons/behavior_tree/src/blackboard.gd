@@ -11,27 +11,25 @@ extends Node
 # This is a good way to separate data from behavior, which is essential 
 # to avoid nasty bugs.
 
-export(Dictionary) var _data: Dictionary
-
-var data: Dictionary
+export(Dictionary) var data: Dictionary
 
 
 
-func _enter_tree():
-	data = _data.duplicate()
+func _enter_tree() -> void:
+	data = data.duplicate()
 
 
-func _ready():
+func _ready() -> void :
 	for key in data.keys():
 		assert(key is String)
 
 
-func set_data(key: String, value):
+func set_data(key: String, value) -> void:
 	data[key] = value
 
 
 func get_data(key: String):
-	if data.has(key):
+	if has_data(key):
 		var value = data[key]
 		if value is NodePath:
 			if value.is_empty() or not get_tree().get_root().has_node(value):
@@ -41,8 +39,9 @@ func get_data(key: String):
 				return get_node(value) # If you store NodePaths, will return the Node.
 		else:
 			return value
+	else:
+		return null
 
 
 func has_data(key: String) -> bool:
 	return data.has(key)
-

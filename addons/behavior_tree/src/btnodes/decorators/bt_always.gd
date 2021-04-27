@@ -13,7 +13,4 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	if result is GDScriptFunctionState:
 		result = yield(result, "completed")
 	
-	if always_what == "succeed":
-		return succeed()
-	else:
-		return fail()
+	return call(always_what)

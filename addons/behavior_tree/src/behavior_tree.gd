@@ -7,32 +7,68 @@ extends Node
 export(bool) var is_active: bool = false
 export(NodePath) var _blackboard
 export(NodePath) var _agent
-export(String, "idle", "physics") var sync_mode
+export(String, "Idle", "Physics") var sync_mode
 export(bool) var debug = false
 
+var tick_result
 
-func _ready():
+onready var agent = get_node(_agent) as Node
+onready var blackboard = get_node(_blackboard) as Blackboard
+onready var bt_root = get_child(0) as BTNode
+
+
+
+func _ready() -> void:
 	assert(get_child_count() == 1)
-	yield(get_tree(), "idle_frame") # To ensure the agent is ready.
-	run()
+	start()
 
 
-func run():
-	var blackboard: Blackboard = get_node(_blackboard)
-	var bt_root: BTNode = get_child(0)
-	var agent: Node = get_node(_agent)
-	var tick_result
+func _process(delta: float) -> void:
+	if not is_active:
+		set_process(false)
+		return
 	
-	while is_active:
-		if debug:
-			print()
-		
-		tick_result = bt_root.tick(agent, blackboard)
-		
-		if tick_result is GDScriptFunctionState:
-			tick_result = yield(tick_result, "completed")
-		
-		if sync_mode == "idle":
-			yield(get_tree(), "idle_frame") 
-		else:
-			yield(get_tree(), "physics_frame")
+	if debug:
+		print()
+	
+	tick_result = bt_root.tick(agent, blackboard)
+	
+	if tick_result is GDScriptFunctionState:
+		set_process(false)
+		yield(tick_result, "completed")
+		set_process(true)
+	
+
+
+func _physics_process(delta: float) -> void:
+	if not is_active:
+		set_physics_process(false)
+		return
+	
+	if debug:
+		print()
+	
+	tick_result = bt_root.tick(agent, blackboard)
+	
+	if tick_result is GDScriptFunctionState:
+		set_physics_process(false)
+		yield(tick_result, "completed")
+		set_physics_process(true)
+
+
+func start() -> void:
+	if not is_active:
+		return
+	
+	match sync_mode:
+		"Idle":
+			set_physics_process(false)
+			set_process(true)
+		"Physics":
+			set_process(false)
+			set_physics_process(true)
+
+
+func abort() -> void:
+	is_active = false
+

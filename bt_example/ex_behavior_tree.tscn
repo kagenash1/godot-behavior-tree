@@ -2,15 +2,14 @@
 
 [ext_resource path="res://addons/behavior_tree/src/btnodes/decorators/bt_always.gd" type="Script" id=1]
 [ext_resource path="res://addons/behavior_tree/src/behavior_tree.gd" type="Script" id=2]
-[ext_resource path="res://bt_example/conditions/is_target_aquired.gd" type="Script" id=3]
-[ext_resource path="res://bt_example/actions/reload.gd" type="Script" id=4]
-[ext_resource path="res://bt_example/conditions/is_out_of_ammo.gd" type="Script" id=5]
+[ext_resource path="res://bt_example/conditions/target_aquired.gd" type="Script" id=3]
+[ext_resource path="res://bt_example/leaves/reload.gd" type="Script" id=4]
+[ext_resource path="res://bt_example/conditions/out_of_ammo.gd" type="Script" id=5]
 [ext_resource path="res://addons/behavior_tree/src/btnodes/composites/bt_sequence.gd" type="Script" id=6]
-[ext_resource path="res://bt_example/actions/shoot.gd" type="Script" id=7]
+[ext_resource path="res://bt_example/leaves/shoot.gd" type="Script" id=7]
 [ext_resource path="res://addons/behavior_tree/src/btnodes/composites/bt_random_selector.gd" type="Script" id=8]
 [ext_resource path="res://addons/behavior_tree/src/btnodes/leaves/bt_wait.gd" type="Script" id=9]
 [ext_resource path="res://addons/behavior_tree/src/btnodes/decorators/bt_repeat.gd" type="Script" id=10]
-
 
 [node name="BehaviorTree" type="Node"]
 script = ExtResource( 2 )
@@ -35,7 +34,7 @@ wait_time = 2.0
 
 [node name="Always succeed" type="Node" parent="BTSequence"]
 script = ExtResource( 1 )
-always_what = "succeed"
+always_what = "Succeed"
 
 [node name="Out of ammo\?" type="Node" parent="BTSequence/Always succeed"]
 script = ExtResource( 5 )

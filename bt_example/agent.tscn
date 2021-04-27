@@ -9,13 +9,11 @@ script = ExtResource( 3 )
 
 [node name="Blackboard" type="Node" parent="."]
 script = ExtResource( 2 )
-_data = {
-"is_target_aquired": false
-}
 
 [node name="BehaviorTree" parent="." instance=ExtResource( 1 )]
 _blackboard = NodePath("../../Agent/Blackboard")
 _agent = NodePath("../../Agent")
+sync_mode = "Idle"
 
 [node name="Label" type="Label" parent="."]
 anchor_right = 1.0

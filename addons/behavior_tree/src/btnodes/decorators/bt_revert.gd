@@ -11,6 +11,5 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	
 	if bt_child.succeeded():
 		return fail()
-	else:
-		return succeed()
+	return succeed()
 

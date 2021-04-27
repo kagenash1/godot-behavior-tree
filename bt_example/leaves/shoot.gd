@@ -1,6 +1,8 @@
 extends BTLeaf
 
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
+	assert("ammo" in agent)
+	
 	if agent.ammo <= 0:
 		return fail()
 	
