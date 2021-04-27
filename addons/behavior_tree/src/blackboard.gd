@@ -15,8 +15,10 @@ export(Dictionary) var data: Dictionary
 
 
 
+
 func _enter_tree() -> void:
 	data = data.duplicate()
+
 
 
 func _ready() -> void :
@@ -29,7 +31,7 @@ func set_data(key: String, value) -> void:
 
 
 func get_data(key: String):
-	if has_data(key):
+	if data.has(key):
 		var value = data[key]
 		if value is NodePath:
 			if value.is_empty() or not get_tree().get_root().has_node(value):

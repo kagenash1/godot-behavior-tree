@@ -13,7 +13,7 @@ extends BTDecorator
 export(bool) var start_locked = false
 export(bool) var permanent = false
 export(NodePath) var _locker
-export(String, "Failure", "Success", "Always") var lock_if
+export(int, "Failure", "Success", "Always") var lock_if
 export(NodePath) var _unlocker
 export(int, "Failure", "Success") var unlock_if
 export(float) var lock_time = 0.05
@@ -54,9 +54,9 @@ func lock():
 
 
 func check_lock(current_locker: BTNode):
-	if ((lock_if == "Always"  and not current_locker.running()) 
-	or ( lock_if == "Success" and current_locker.succeeded()) 
-	or ( lock_if == "Failure" and current_locker.failed())):
+	if ((lock_if == 2  and not current_locker.running()) 
+	or ( lock_if == 1 and current_locker.succeeded()) 
+	or ( lock_if == 0 and current_locker.failed())):
 		lock()
 
 

@@ -3,7 +3,9 @@ extends BTDecorator
 
 # Executes the child and always either succeeds or fails.
 
-export(String, "fail", "succeed") var always_what
+export(int, "Fail", "Succeed") var always_what
+
+onready var return_func: String = "fail" if always_what == 0 else "succeed"
 
 
 
@@ -13,4 +15,4 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	if result is GDScriptFunctionState:
 		result = yield(result, "completed")
 	
-	return call(always_what)
+	return call(return_func)

@@ -34,7 +34,7 @@ wait_time = 2.0
 
 [node name="Always succeed" type="Node" parent="BTSequence"]
 script = ExtResource( 1 )
-always_what = "Succeed"
+always_what = 1
 
 [node name="Out of ammo\?" type="Node" parent="BTSequence/Always succeed"]
 script = ExtResource( 5 )

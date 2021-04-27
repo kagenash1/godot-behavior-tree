@@ -7,7 +7,7 @@ extends Node
 export(bool) var is_active: bool = false
 export(NodePath) var _blackboard
 export(NodePath) var _agent
-export(String, "Idle", "Physics") var sync_mode
+export(int, "Idle", "Physics") var sync_mode
 export(bool) var debug = false
 
 var tick_result
@@ -61,10 +61,10 @@ func start() -> void:
 		return
 	
 	match sync_mode:
-		"Idle":
+		0:
 			set_physics_process(false)
 			set_process(true)
-		"Physics":
+		1:
 			set_process(false)
 			set_physics_process(true)
 
