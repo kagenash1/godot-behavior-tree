@@ -65,9 +65,6 @@ func _ready():
 	else:
 		push_warning("Deactivated BTNode '" + name + "', path: '" + get_path() + "'")
 		fail()
-	
-	if abort_tree:
-		connect("abort_tree", owner, "abort")
 
 
 ### OVERRIDE THE FOLLOWING FUNCTIONS ###
