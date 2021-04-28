@@ -8,6 +8,7 @@ extends BTDecorator
 # If you don't specify an unlocker, the unlock_if variable is useless and only the lock_time will 
 # be considered, and viceversa.
 # You can also choose to lock permanently or to lock on startup.
+#
 # A locked BTGuard will always return fail().
 
 export(bool) var start_locked = false
@@ -41,6 +42,9 @@ func _on_locker_tick(_result):
 func lock():
 	locked = true
 	
+	if debug:
+		print(name + " locked for " + str(lock_time) + " seconds")
+	
 	if permanent:
 		return
 	elif unlocker:
@@ -51,10 +55,13 @@ func lock():
 	else:
 		yield(get_tree().create_timer(lock_time, false), "timeout")
 		locked = false
+	
+	if debug:
+		print(name + " unlocked")
 
 
 func check_lock(current_locker: BTNode):
-	if ((lock_if == 2  and not current_locker.running()) 
+	if ((lock_if == 2 and not current_locker.running()) 
 	or ( lock_if == 1 and current_locker.succeeded()) 
 	or ( lock_if == 0 and current_locker.failed())):
 		lock()

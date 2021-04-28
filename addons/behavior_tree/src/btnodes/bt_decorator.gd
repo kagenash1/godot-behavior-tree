@@ -9,7 +9,7 @@ onready var bt_child: BTNode = get_child(0) as BTNode
 
 
 func _ready():
-	assert(get_child_count() == 1)
+	assert(get_child_count() == 1, "A BTDecorator can only have one child.")
 
 
 func _tick(agent: Node, blackboard: Blackboard) -> bool:

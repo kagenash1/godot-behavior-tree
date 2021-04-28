@@ -15,15 +15,13 @@ export(Dictionary) var data: Dictionary
 
 
 
-
 func _enter_tree() -> void:
 	data = data.duplicate()
 
 
-
 func _ready() -> void :
 	for key in data.keys():
-		assert(key is String)
+		assert(key is String, "Blackboard keys must be stored as strings.")
 
 
 func set_data(key: String, value) -> void:

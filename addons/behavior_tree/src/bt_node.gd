@@ -5,40 +5,11 @@ extends Node
 # You don't usually need to instance this node directly.
 # To define your behaviors, use and extend BTLeaf instead.
 
-class BTNodeState:
-	var success: bool = true  setget set_success
-	var failure: bool = false setget set_failure
-	var running: bool = false setget set_running
-	
-	
-	func set_success(value: bool = true):
-		if value == false:
-			print_debug("Ignoring manual change of BTNodeState. Use setters.")
-			return
-		success = true
-		failure = false
-		running = false
-	
-	
-	func set_failure(value: bool = true):
-		if value == false:
-			print_debug("Ignoring manual change of BTNodeState. Use setters.")
-			return
-		success = false
-		failure = true
-		running = false
-	
-	
-	func set_running(value: bool = true):
-		if value == false:
-			print_debug("Ignoring manual change of BTNodeState. Use setters.")
-			return
-		success = false
-		failure = false
-		running = true
-
-
-
+enum BTNodeState {
+	FAILURE,
+	SUCCESS,
+	RUNNING,
+}
 
 # (Optional) Emitted after a tick() call. True is success, false is failure. 
 signal tick(result)
@@ -55,7 +26,7 @@ export(bool) var debug: bool = false
 # Turn this on to abort the tree after completion.
 export(bool) var abort_tree: bool
 
-var state: BTNodeState = BTNodeState.new()
+var state: int setget set_state
 
 
 
@@ -89,49 +60,51 @@ func _post_tick(agent: Node, blackboard: Blackboard, result: bool) -> void:
 
 ### BEGIN: RETURN VALUES ###
 
-# Your _tick() must return on of the two following funcs.
+# Your _tick() must return one of the following functions.
 
 # Return this to set the state to success.
 func succeed() -> bool:
-	state.set_success()
+	state = BTNodeState.SUCCESS
 	return true
 
 
 # Return this to set the state to failure.
 func fail() -> bool:
-	state.set_failure()
+	state = BTNodeState.FAILURE
 	return false
 
 
 # Return this to match the state to another state.
-func set_state(rhs: BTNodeState) -> bool:
-	if rhs.success:
-		return succeed()
-	else:
-		return fail()
+func set_state(rhs: int) -> bool:
+	match rhs:
+		BTNodeState.SUCCESS:
+			return succeed()
+		BTNodeState.FAILURE:
+			return fail()
+	
+	assert(false, "Invalid BTNodeState assignment. Can only set to success or failure.")
+	return false
 
 ### END: RETURN VALUES ###
 
 
 
-# You are not supposed to use this. 
-# It's called automatically. 
-# It won't do what you think.
+# Don't call this.
 func run():
-	state.set_running()
+	state = BTNodeState.RUNNING
 
 
 # You can use the following to recover the state of the node
 func succeeded() -> bool:
-	return state.success
+	return state == BTNodeState.SUCCESS
 
 
 func failed() -> bool:
-	return state.failure
+	return state == BTNodeState.FAILURE
 
 
 func running() -> bool:
-	return state.running
+	return state == BTNodeState.RUNNING
 
 
 # Or this, as a string.
@@ -163,14 +136,10 @@ func tick(agent: Node, blackboard: Blackboard) -> bool:
 	var result = _tick(agent, blackboard)
 	
 	if result is GDScriptFunctionState:
-		# If you yield, the node must be running.
-		# If you crash here it means you changed the state before yield.
-		assert(running())
+		assert(running(), "BTNode execution was suspended but it's not running. Did you succeed() or fail() before yield?")
 		result = yield(result, "completed")
 	
-	# If you complete execution (or don't yield anymore), the node can't be running.
-	# If you crash here it means you forgot to return succeed() or fail().
-	assert(not running()) 
+	assert(not running(), "BTNode execution was completed but it's still running. Did you forget to return succeed() or fail()?") 
 	
 	# Do stuff after core behavior depending on the result
 	_post_tick(agent, blackboard, result)
@@ -178,6 +147,7 @@ func tick(agent: Node, blackboard: Blackboard) -> bool:
 	# Notify completion and new state (i.e. the result of the execution)
 	emit_signal("tick", result)
 	
+	# Queue tree abortion at the end of current tick
 	if abort_tree:
 		emit_signal("abort_tree")
 	
