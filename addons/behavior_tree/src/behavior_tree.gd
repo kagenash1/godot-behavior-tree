@@ -20,6 +20,7 @@ onready var bt_root = get_child(0) as BTNode
 
 func _ready() -> void:
 	assert(get_child_count() == 1)
+	bt_root.propagate_call("connect", ["abort_tree", self, "abort"])
 	start()
 
 
@@ -71,4 +72,3 @@ func start() -> void:
 
 func abort() -> void:
 	is_active = false
-
