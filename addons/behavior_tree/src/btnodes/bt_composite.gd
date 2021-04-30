@@ -15,7 +15,7 @@ var bt_child: BTNode # Used to iterate over children
 
 
 func _ready():
-	assert(get_child_count() > 1)
+	assert(get_child_count() > 1, "A BTComposite must have more than one child.")
 
 
 

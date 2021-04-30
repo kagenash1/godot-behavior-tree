@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://addons/behavior_tree/src/btnodes/decorators/bt_always.gd" type="Script" id=1]
 [ext_resource path="res://addons/behavior_tree/src/behavior_tree.gd" type="Script" id=2]
@@ -10,6 +10,10 @@
 [ext_resource path="res://addons/behavior_tree/src/btnodes/composites/bt_random_selector.gd" type="Script" id=8]
 [ext_resource path="res://addons/behavior_tree/src/btnodes/leaves/bt_wait.gd" type="Script" id=9]
 [ext_resource path="res://addons/behavior_tree/src/btnodes/decorators/bt_repeat.gd" type="Script" id=10]
+[ext_resource path="res://addons/behavior_tree/src/btnodes/decorators/bt_guard.gd" type="Script" id=11]
+[ext_resource path="res://bt_example/leaves/take_cover.gd" type="Script" id=12]
+[ext_resource path="res://addons/behavior_tree/src/btnodes/composites/bt_selector.gd" type="Script" id=13]
+[ext_resource path="res://addons/behavior_tree/src/btnodes/decorators/bt_repeat_until.gd" type="Script" id=14]
 
 [node name="BehaviorTree" type="Node"]
 script = ExtResource( 2 )
@@ -19,39 +23,61 @@ debug = true
 [node name="BTSequence" type="Node" parent="."]
 script = ExtResource( 6 )
 
-[node name="BTRandomSelector" type="Node" parent="BTSequence"]
-script = ExtResource( 8 )
-
-[node name="Wait 1 sec" type="Node" parent="BTSequence/BTRandomSelector"]
-script = ExtResource( 9 )
-debug = true
-wait_time = 1.0
-
-[node name="Wait 2 sec" type="Node" parent="BTSequence/BTRandomSelector"]
-script = ExtResource( 9 )
-debug = true
-wait_time = 2.0
-
 [node name="Always succeed" type="Node" parent="BTSequence"]
 script = ExtResource( 1 )
 always_what = 1
 
-[node name="Out of ammo\?" type="Node" parent="BTSequence/Always succeed"]
+[node name="Lock while taking cover" type="Node" parent="BTSequence/Always succeed"]
+script = ExtResource( 11 )
+_locker = NodePath("../../BTSelector/Out of ammo\?/BTSequence/Repeat Until Success/Take Cover")
+_unlocker = NodePath("../../BTSelector/Out of ammo\?/BTSequence/Reload")
+unlock_if = 1
+
+[node name="BTRandomSelector" type="Node" parent="BTSequence/Always succeed/Lock while taking cover"]
+script = ExtResource( 8 )
+
+[node name="Wait 1 sec" type="Node" parent="BTSequence/Always succeed/Lock while taking cover/BTRandomSelector"]
+script = ExtResource( 9 )
+debug = true
+wait_time = 1.0
+
+[node name="Wait 2 sec" type="Node" parent="BTSequence/Always succeed/Lock while taking cover/BTRandomSelector"]
+script = ExtResource( 9 )
+debug = true
+wait_time = 2.0
+
+[node name="BTSelector" type="Node" parent="BTSequence"]
+script = ExtResource( 13 )
+
+[node name="Out of ammo\?" type="Node" parent="BTSequence/BTSelector"]
 script = ExtResource( 5 )
 debug = true
 
-[node name="Reload" type="Node" parent="BTSequence/Always succeed/Out of ammo\?"]
+[node name="BTSequence" type="Node" parent="BTSequence/BTSelector/Out of ammo\?"]
+script = ExtResource( 6 )
+
+[node name="Repeat Until Success" type="Node" parent="BTSequence/BTSelector/Out of ammo\?/BTSequence"]
+script = ExtResource( 14 )
+until_what = 1
+
+[node name="Take Cover" type="Node" parent="BTSequence/BTSelector/Out of ammo\?/BTSequence/Repeat Until Success"]
+script = ExtResource( 12 )
+
+[node name="Reload" type="Node" parent="BTSequence/BTSelector/Out of ammo\?/BTSequence"]
 script = ExtResource( 4 )
 debug = true
 
-[node name="TargetAquired\?" type="Node" parent="BTSequence"]
+[node name="Repeat until fail" type="Node" parent="BTSequence/BTSelector"]
+script = ExtResource( 14 )
+
+[node name="Target Aquired\?" type="Node" parent="BTSequence/BTSelector/Repeat until fail"]
 script = ExtResource( 3 )
 debug = true
 
-[node name="BTRepeat" type="Node" parent="BTSequence/TargetAquired\?"]
+[node name="Repeat twice" type="Node" parent="BTSequence/BTSelector/Repeat until fail/Target Aquired\?"]
 script = ExtResource( 10 )
 times_to_repeat = 2
 
-[node name="Shoot" type="Node" parent="BTSequence/TargetAquired\?/BTRepeat"]
+[node name="Shoot" type="Node" parent="BTSequence/BTSelector/Repeat until fail/Target Aquired\?/Repeat twice"]
 script = ExtResource( 7 )
 debug = true
