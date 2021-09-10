@@ -14,6 +14,7 @@ extends Node
 export(Dictionary) var data: Dictionary
 
 
+var behavior_tree_path : String
 
 func _enter_tree() -> void:
 	data = data.duplicate()

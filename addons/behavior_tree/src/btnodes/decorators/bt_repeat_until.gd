@@ -19,6 +19,13 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 		if result is GDScriptFunctionState:
 			result = yield(result, "completed")
 		
-		yield(get_tree().create_timer(frequency, false), "timeout")
+		if frequency > 0.0:
+			yield(get_tree().create_timer(frequency, false), "timeout")
+		else:
+			var behavior_tree  : BehaviorTree = get_node(blackboard.behavior_tree_path)
+			if behavior_tree.sync_mode == 0:
+				yield(get_tree(), "idle_frame")
+			if behavior_tree.sync_mode == 1:
+				yield(get_tree(), "physics_frame")
 	
 	return set_state(bt_child.state)
