@@ -21,7 +21,7 @@ onready var bt_root = get_child(0) as BTNode
 func _ready() -> void:
 	assert(get_child_count() == 1, "A Behavior Tree can only have one entry point.")
 	bt_root.propagate_call("connect", ["abort_tree", self, "abort"])
-	blackboard.behavior_tree_path = get_path()
+	blackboard.set_data("behavior_tree", self)
 	start()
 
 

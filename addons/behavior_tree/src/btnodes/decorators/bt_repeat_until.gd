@@ -22,7 +22,7 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 		if frequency > 0.0:
 			yield(get_tree().create_timer(frequency, false), "timeout")
 		else:
-			var behavior_tree  : BehaviorTree = get_node(blackboard.behavior_tree_path)
+			var behavior_tree: BehaviorTree = blackboard.get_data("behavior_tree")
 			if behavior_tree.sync_mode == 0:
 				yield(get_tree(), "idle_frame")
 			if behavior_tree.sync_mode == 1:
