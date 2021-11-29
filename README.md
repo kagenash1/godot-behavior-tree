@@ -1,5 +1,4 @@
 # godot-behavior-tree
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/GabrieleTorini) 
 
 A GDScript implementation of a behavior tree for game AI, based on native Godot nodes and using the built in scene tree editor.
 
@@ -23,10 +22,3 @@ INSTRUCTIONS:
 - Other decorators allow you to loop execution, reverse the result of tick, and so on. There is a lot you can do by customising execution through decorators.
 - Good practice is to use the provided nodes and follow the design pattern of the behavior tree. But since this is a purely code based implementation without any visual editor, you have a lot of control over the design and thus a margin of error. These are just useful scripts that follow some "good practices" but are not bound to them, if not for a couple of basic rules. It is up to you to decide how you design your behavior tree, but keep in mind that if you misuse it you will not benefit from the power of the behavior tree pattern. (for example, you could even use the base BTNode for everything and just extend it everytime, although it would be a mess)
 - You could have a huge behaviour tree, but the best practice is to follow the component philosophy of Godot and make several smaller behaviour trees for each component of your scene. For example, a tree for your movement controller, a tree for your weapon controller, a tree for your pathfinder component, etc.. A behaviour tree can only have one blackboard, but the same blackboard can be used by many trees, so this is particularly handy if you wanna have several trees without also making multiple blackboards. Personally, the reason why I have the blackboard as a decoupled component, is because I wanted to make squads of enemies sharing the same data but behaving independently, so this is a use case for this. Moreover, I usually have several components in my actors, and I wanna use the same database for different tree.
-
-
-Tutorials/demos will be included soon. 
-
-If you make amazing AI with the Behavior Tree, consider offerring me a coffee so I can stay awake and improve it :)
-
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/GabrieleTorini) 
