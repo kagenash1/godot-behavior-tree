@@ -1,9 +1,16 @@
-class_name BTNode, "res://addons/behavior_tree/icons/btnode.svg" 
+class_name BTNode, "res://addons/behavior_tree/icons/btnode.svg"
 extends Node
 
-# Base class from which every node in the behavior tree inherits. 
+# Base class from which every node in the behavior tree inherits.
 # You don't usually need to instance this node directly.
 # To define your behaviors, use and extend BTLeaf instead.
+
+# (Optional) Emitted after a tick() call. True is success, false is failure.
+signal tick(result)
+
+# Emitted if abort_tree is set to true
+signal abort_tree()
+
 
 enum BTNodeState {
 	FAILURE,
@@ -11,24 +18,16 @@ enum BTNodeState {
 	RUNNING,
 }
 
-# (Optional) Emitted after a tick() call. True is success, false is failure. 
-signal tick(result)
-
-# Emitted if abort_tree is set to true
-signal abort_tree()
-
 # Turn this off to make the node fail at each tick.
-export(bool) var is_active: bool = true 
+export(bool) var is_active: bool = true
 
 # Turn this on to print the name of the node at each tick.
-export(bool) var debug: bool = false 
+export(bool) var debug: bool = false
 
 # Turn this on to abort the tree after completion.
 export(bool) var abort_tree: bool
 
 var state: int setget set_state
-
-
 
 func _ready():
 	if is_active:
@@ -41,17 +40,18 @@ func _ready():
 ### OVERRIDE THE FOLLOWING FUNCTIONS ###
 # You just need to implement them. DON'T CALL THEM MANUALLY.
 
-func _pre_tick(agent: Node, blackboard: Blackboard) -> void:
+# Public: Called before the tick happens used for preperation for action or conditional
+func _pre_tick(_agent: Node, _blackboard: Blackboard) -> void:
 	pass
 
 
 # This is where the core behavior goes and where the node state is changed.
 # You must return either succeed() or fail() (check below), not just set the state.
-func _tick(agent: Node, blackboard: Blackboard) -> bool:
+func _tick(_agent: Node, _blackboard: Blackboard) -> bool:
 	return succeed()
 
-
-func _post_tick(agent: Node, blackboard: Blackboard, result: bool) -> void:
+# Public: Called after the tick for anything that needs to happen after the action
+func _post_tick(_agent: Node, _blackboard: Blackboard, _result: bool) -> void:
 	pass
 
 ### DO NOT OVERRIDE ANYTHING FROM HERE ON ###
@@ -81,7 +81,7 @@ func set_state(rhs: int) -> bool:
 			return succeed()
 		BTNodeState.FAILURE:
 			return fail()
-	
+
 	assert(false, "Invalid BTNodeState assignment. Can only set to success or failure.")
 	return false
 
@@ -117,38 +117,45 @@ func get_state() -> String:
 		return "running"
 
 
-# Again, DO NOT override this. 
+# Again, DO NOT override this.
 func tick(agent: Node, blackboard: Blackboard) -> bool:
 	if not is_active:
 		return fail()
-	
+
 	if running():
 		return false
-	
+
 	if debug:
 		print(name)
-	
+
 	# Do stuff before core behavior
 	_pre_tick(agent, blackboard)
-	
-	run() 
-	
+
+	run()
+
 	var result = _tick(agent, blackboard)
-	
+
 	if result is GDScriptFunctionState:
-		assert(running(), "BTNode execution was suspended but it's not running. Did you succeed() or fail() before yield?")
+		assert(
+			running(),
+			"BTNode execution was suspended. Did you succeed() or fail() before yield?"
+		)
+
 		result = yield(result, "completed")
-	
-	assert(not running(), "BTNode execution was completed but it's still running. Did you forget to return succeed() or fail()?") 
-	
+
+	assert(
+		not running(),
+		"BTNode executed but it's still running. Did you forget to return succeed() or fail()?"
+	)
+
 	# Do stuff after core behavior depending on the result
 	_post_tick(agent, blackboard, result)
-	
+
 	# Notify completion and new state (i.e. the result of the execution)
 	emit_signal("tick", result)
-	
+
 	# Queue tree abortion at the end of current tick
 	if abort_tree:
 		emit_signal("abort_tree")
-	
+
 	return result
