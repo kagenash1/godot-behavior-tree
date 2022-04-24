@@ -2,6 +2,8 @@
 
 A GDScript implementation of a behavior tree for game AI, based on native Godot nodes and using the built in scene tree editor.
 
+C# VERSION -> https://github.com/MadFlyFish/godot-behavior-tree-csharp
+
 INSTALLATION
 - Copy the 'addons' folder into the main directory of your project.
 - Enable the plugin from project settings, THEN RESTART Godot, otherwise it will not recognize the new classes (that's a bug of the engine).
